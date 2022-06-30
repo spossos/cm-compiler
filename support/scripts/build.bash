@@ -279,10 +279,11 @@ while getopts ":hvlxcdrs:mM::p:b:i:V-:" opt; do
                     usage
                     exit 1
                 fi
-                if [ "$VS_VERSION" == "vs2017" ]; then
-		    MSBUILD_PATH="/cygdrive/c/Program Files (x86)/Microsoft Visual Studio/2017/Professional/MSBuild/15.0/bin/MSBuild.exe"
-	        else
-		    MSBUILD_PATH="/cygdrive/c/Program Files (x86)/MSBuild/14.0/bin/MSBuild.exe"
+                if [ "$VS_VERSION" == "vs2022" ]; then
+            #MSBUILD_PATH="/cygdrive/c/Program Files (x86)/Microsoft Visual Studio/2017/Professional/MSBuild/15.0/bin/MSBuild.exe"
+            MSBUILD_PATH="/cygdrive/c/Program Files/Microsoft Visual Studio/2022/Professional/Msbuild/Current/Bin/MSBuild.exe"
+            else
+            MSBUILD_PATH="/cygdrive/c/Program Files (x86)/MSBuild/14.0/bin/MSBuild.exe"
                 fi
                 if [ ! -f $MSBUILD_PATH ]; then
                     echo "Couldn't find MSBuild.exe in default location - please run again with -M and provide path"
@@ -343,7 +344,7 @@ elif [ "$1" != "" ]; then
 fi
 
 # Check the arguments
-if [ "$VS_VERSION" != "vs2010" -a "$VS_VERSION" != "vs2012" -a "$VS_VERSION" != "vs2013" -a "$VS_VERSION" != "vs2015" -a "$VS_VERSION" != "vs2017" ]; then
+if [ "$VS_VERSION" != "vs2010" -a "$VS_VERSION" != "vs2012" -a "$VS_VERSION" != "vs2013" -a "$VS_VERSION" != "vs2015" -a "$VS_VERSION" != "vs2017" -a "$VS_VERSION" != "vs2022" ]; then
     echo "Illegal vs version $VS_VERSION"
     usage
     exit 1
@@ -502,6 +503,9 @@ if [ "$USE_VS" != "" ]; then
             ;;
         vs2017)
             CMAKE_STRING="Visual Studio 15$VS_WIN64"
+            ;;
+        vs2022)
+            CMAKE_STRING="Visual Studio 17"
             ;;
     esac
 elif [ "$USE_XCODE" != "" ]; then
@@ -668,6 +672,7 @@ if [ "$USE_VS" != "" ]; then
             vs2013) export VisualStudioVersion=12.0;;
             vs2015) export VisualStudioVersion=14.0;;
             vs2017) export VisualStudioVersion=15.0;;
+            vs2022) export VisualStudioVersion=17.0;;
             *) echo "Unknown VS version $VS_VERSION"; exit 1;;
         esac
         if [ "$BUILD_DEBUG" != "" ]; then
